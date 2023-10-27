@@ -12,7 +12,7 @@ from rich.table import Table
 
 from language.folding_callbacks import FoldingCallback
 from language.program import ProgramNode
-
+import wandb
 
 @dataclass
 class MetropolisHastingsState:
@@ -69,6 +69,9 @@ def metropolis_hastings_step(
 
     if accept_candidate and verbose:
         print(f"Accepted {sequence} with energy {candidate_energy:.2f}.")
+
+
+    wandb.log({"candidate":candidate, "state":state, "folding_output":folding_output, "energy_term_fn_values": energy_term_fn_values, "energy": energy, "accept_candidate": accept_candidate})
 
     best = (state.best_energy is None) or candidate_energy < state.best_energy
 
