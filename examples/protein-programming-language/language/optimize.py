@@ -71,10 +71,17 @@ def metropolis_hastings_step(
         print(f"Accepted {sequence} with energy {candidate_energy:.2f}.")
 
 
-    wandb.log({"candidate":candidate, "state":state, "folding_output":folding_output, "energy_term_fn_values": energy_term_fn_values, "energy": energy, "accept_candidate": accept_candidate})
+    #wandb.log({"candidate":candidate, "state":state, "folding_output":folding_output, "energy_term_fn_values": candidate_energy_term_fn_values, "energy": candidate_energy, "accept_candidate": accept_candidate})
+    dict_log = {"num_steps": state.num_steps + 1, 
+                "sequence": sequence, 
+                "energy": candidate_energy,
+                "accept_candidate": accept_candidate}
 
+    for name, weight, value in candidate_energy_term_fn_values:
+        dict_log[name] = value
+    wandb.log(dict_log)
     best = (state.best_energy is None) or candidate_energy < state.best_energy
-
+   
     return MetropolisHastingsState(
         program=candidate if accept_candidate else state.program,
         temperature=temperature,

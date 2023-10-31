@@ -12,6 +12,7 @@ from language.energy import (
 )
 from language.folding_callbacks import EsmFoldv1, FoldingCallback, FoldingResult
 from language.optimize import run_simulated_annealing
+from language.nested_sampling import run_nested_sampling
 from language.program import ProgramNode
 from language.sequence import (
     ConstantSequenceSegment,
